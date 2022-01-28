@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Fullstack Demo</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body onload="getComment()">
+        <h1>Fullstack Demo</h1>
+        <button class="button" onclick="getHighscore()">Get Specific Highscore</button>
+        <button class="button" onclick="getHighscores()">Get All Highscores</button>
+        <button class="button" onclick="insertHighscore()">Insert Highscore</button>
+        <button class="button" onclick="deleteHighscore()">Delete Highscore</button>
+        <button class="button" onclick="updateHighscore()">Update Highscore</button>
+        <br>
+        <button class="button" onclick="signUp()">Sign Up</button>
+        <button class="button" onclick="logIn()">Log In</button>
+        <button class="button" onclick="deleteUser()">Delete User</button>
+        <br>
+        <textarea id="textArea" placeholder="Add Comment" required></textarea>
+        <br>
+        <button class="button" onclick="submit(), getComment()">Submit Comment</button>
+        <button class="button" onclick="getCommentAlert()">Alert Comments</button>
+
+        
+        
+        <script src="/app.js"></script>
+        <script src="/dom.js"></script>
+
+        <!--<div style="margin-top: 500px;"></div>Giver noget plads på siden, så man kan scrolle mere ned-->
+    </body>
+</html>
