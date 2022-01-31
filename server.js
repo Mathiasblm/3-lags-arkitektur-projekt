@@ -2,6 +2,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const app = express();
+var ObjectId = require('mongodb').ObjectId;
 
 // configure express server
 app.use(express.static("./"));
@@ -77,38 +78,43 @@ app.get("/comments", (request, response) => {
 });
 
 // delete comment
-app.delete("/user", async (request, response) => {
+app.delete("/comment", (request, response) => {
+	console.log("Deleting comment: " + request.body.Id);
 
-  try{ //fanger fejl
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("mydb");
+    var myquery = { _id: new ObjectId(request.body.Id)};
+    dbo.collection("comments").deleteOne(myquery, function(err, obj) {
+      if (err) throw err;
 
-  console.log("Deleting user: " + request.body.name);
-
-  let passwordIsCorrect = await checkPassword(
-    request.body.username,
-    request.body.password
-  );
-
-  if(!passwordIsCorrect) {
-    response.json({message: "Deletion Unuccessful"});
-    console.log("Deletion failed")
-  }
-
-  let db = await MongoClient.connect(url);
-  let dbo = db.db("mydb");
-  let myquery = {username: request.body.username};
-  let result = dbo.collection("users").deleteOne(myquery);
-  
-  console.log("Deleted: " + JSON.stringify(myquery));
-  response.json({
-    message: "Successfully deleted",
-    user: myquery.username
+      console.log("Deleted: " + JSON.stringify(myquery));
+      response.header("Access-Control-Allow-Origin", "*");
+      response.json(myquery);
+      db.close();
+    });
   });
-  db.close();
-}
-catch (err){ // stopper her
-  console.log(err);
-}
-   
+});
+
+// updating comment
+app.put("/comment", (request, response) => {
+	console.log("Updating comment:" + request.body.Id);
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("mydb");
+    //var myquery = { Comment: new String(request.body.comment_upd)};
+    var myquery = {  _id: new ObjectId(request.body.Id) };
+    var newvalues = { $set: {Comment: request.body.comment_upd} };
+    dbo.collection("comments").updateOne(myquery, newvalues, function(err, obj) {
+      if (err) throw err;
+
+      console.log("Updated Comment: " + request.body.Id + " to " + request.body.comment_upd)
+      response.header("Access-Control-Allow-Origin", "*");
+      response.json({_id: request.body.Id, Comment: request.body.comment_upd});
+      db.close();
+    });
+  });
 });
 
 // get specific highscore

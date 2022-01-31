@@ -1,4 +1,4 @@
-let url = "http://localhost:3001";
+
 let loggedIn = false;
 
 function insertHighscore() {
@@ -25,13 +25,13 @@ function insertHighscore() {
 }
 
 function getHighscore() {
-  fetch(url + "/highscore/" + prompt("Name:"))
+  fetch("/highscore/" + prompt("Name:"))
   .then(response => response.json())
   .then(data => alert(JSON.stringify(data)));
 }
 
 function getHighscores() {
-  fetch(url + "/highscores")
+  fetch("/highscores")
   .then(response => response.json())
   .then(data => alert(JSON.stringify(data)));
 }
@@ -181,10 +181,10 @@ function submit() {
   });
 }
 // delete comment
-function deleteComment() {
+function deleteComment(commentID) {
 
     let data = {
-      Comment: sessionStorage.getItem("Comment")
+      Id: commentID
     };
   
 
@@ -204,18 +204,45 @@ function deleteComment() {
   });
 }
 
+// update comment
+function updateComment(commentID, commentData) {
+
+  let data = {
+    Id: commentID,
+    comment_upd: commentData
+  }
+
+  fetch('./comment', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Comment updated:', data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
+
+
 let div = document.body.appendChild(document.createElement("div"));
 
 function getCommentAlert() {
-  fetch(url + "/comments")
+  fetch("/comments")
   .then(response => response.json())
   .then(data => {
     alert(JSON.stringify(data));
   });
 }
 
+// create comments and display them
 function getComment() {
-  fetch(url + "/comments")
+  fetch("/comments")
   .then(response => response.json())
   .then(data => {
     
@@ -232,8 +259,15 @@ function getComment() {
       let btn1 = div.appendChild(document.createElement("button"));
       let btn2 = div.appendChild(document.createElement("button"));
       btn1.innerHTML = "Rediger";
+      btn1.onclick = function () {
+        updateComment(comment._id, text.value);
+        getComment();
+      };
       btn2.innerHTML = "Slet kommentar";
-      btn1.onclick = deleteComment();
+      btn2.onclick = function () {
+        deleteComment(comment._id);
+        getComment();
+      };
     }
 
   });
