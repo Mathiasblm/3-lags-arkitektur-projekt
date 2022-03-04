@@ -1,4 +1,3 @@
-
 function setup() {
     containerSection = document.createElement('section');
     containerSection.classList.add("container");

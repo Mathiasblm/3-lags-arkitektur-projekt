@@ -106,32 +106,30 @@ function signUp() {
 
 // login
 function logIn() {
-
-  let body = {
-    username: prompt("Username:"),
-    password: prompt("Password:")
-  }
-
-  fetch('./user/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    if(data.loginWasSuccessful){
-      sessionStorage.setItem("username", body.username);
-      sessionStorage.setItem("password", body.password);
+    let body = {
+        username: prompt("Username:"),
+        password: prompt("Password:")
     }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
-  loggedIn = true;
-
+    
+    fetch('./user/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    })
+         .then(response => response.json())
+         .then(data => {
+         console.log(data);
+         if(data.loginWasSuccessful){
+             sessionStorage.setItem("username", body.username);
+             sessionStorage.setItem("password", body.password);
+         }
+    })
+          .catch((error) => {
+          console.error('Error:', error);
+    });
+    loggedIn = true;
 }
 
 // delete user
@@ -160,7 +158,7 @@ async function deleteUser() {
 
 // sub_comment
 function submit() {
-
+    if(loggedIn === true) {
   let data = {
     Comment: document.getElementById("textArea").value
   };
@@ -179,7 +177,10 @@ function submit() {
   .catch((error) => {
     console.error('Error:', error);
   });
+        alert("Comment Posted!");
+    }
 }
+
 // delete comment
 function deleteComment(commentID) {
 
@@ -260,16 +261,19 @@ function getComment() {
       let btn2 = div.appendChild(document.createElement("button"));
       btn1.innerHTML = "Rediger";
       btn1.onclick = function () {
-        updateComment(comment._id, text.value);
-        getComment();
+          if(loggedIn === true) {
+              updateComment(comment._id, text.value);
+              getComment();
+          }
       };
       btn2.innerHTML = "Slet kommentar";
       btn2.onclick = function () {
-        deleteComment(comment._id);
-        getComment();
+          if(loggedIn === true) {
+              deleteComment(comment._id);
+              getComment();
+          }
       };
     }
-
   });
 }
 
