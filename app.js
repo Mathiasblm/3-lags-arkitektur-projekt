@@ -124,37 +124,47 @@ function logIn() {
          if(data.loginWasSuccessful){
              sessionStorage.setItem("username", body.username);
              sessionStorage.setItem("password", body.password);
+             loggedIn = data.loginWasSuccessful;
          }
     })
           .catch((error) => {
           console.error('Error:', error);
     });
-    loggedIn = true;
+}
+//sign out
+function signOut() {
+  if(loggedIn === true) {
+    alert("User signed out")
+    console.log("User signed out")
+  }
+  loggedIn = false;
 }
 
 // delete user
 async function deleteUser() {
-
-  let data = {
-    username: sessionStorage.getItem("username"),
-    password: sessionStorage.getItem("password")
+  if(loggedIn === true) {
+    let data = {
+      username: sessionStorage.getItem("username"),
+      password: sessionStorage.getItem("password")
+    }
+  
+    fetch('./user', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   }
-
-  fetch('./user', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
 }
+  
 
 // sub_comment
 function submit() {
@@ -173,11 +183,11 @@ function submit() {
   .then(response => response.json())
   .then(data => {
     console.log('Comment inserted:', data);
+    alert("Comment Posted!");
   })
   .catch((error) => {
     console.error('Error:', error);
   });
-        alert("Comment Posted!");
     }
 }
 
@@ -264,6 +274,7 @@ function getComment() {
           if(loggedIn === true) {
               updateComment(comment._id, text.value);
               getComment();
+              alert("Kommentar redigeret")
           }
       };
       btn2.innerHTML = "Slet kommentar";
@@ -271,10 +282,9 @@ function getComment() {
           if(loggedIn === true) {
               deleteComment(comment._id);
               getComment();
+              alert("Kommentar slettet")
           }
       };
     }
   });
 }
-
-

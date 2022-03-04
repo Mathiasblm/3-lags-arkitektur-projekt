@@ -270,6 +270,9 @@ app.delete("/user", async (request, response) => {
     message: "Successfully deleted",
     user: myquery.username
   });
+  if (loggedin===true) {
+    alert("User deleted")
+  }
   db.close();
 }
 catch (err){ // stopper her
