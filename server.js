@@ -271,7 +271,7 @@ app.delete("/user", async (request, response) => {
     user: myquery.username
   });
   if (loggedin===true) {
-    alert("User deleted")
+    alert("Bruger slettet")
   }
   db.close();
 }

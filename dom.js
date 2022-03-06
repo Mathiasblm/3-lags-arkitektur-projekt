@@ -6,9 +6,6 @@ function setup() {
     let image = new Image(400, 400); // imports image to JavasScript
     image.src = "code.png";
     containerSection.appendChild(image);
-    
-    
 }
 
 setup();
-

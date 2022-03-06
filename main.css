@@ -2,10 +2,10 @@ body {
   background-color: #2b2d2f;
   /*overflow: hidden;*/
   margin-top: 50px;
-  color: #ff00d4;
+  color: #4caf50;
 }
 h1 {
-  color: rgb(253, 249, 2);
+  color: #4caf50;
 }
 h3 {
   color: #4caf50;
@@ -24,7 +24,7 @@ h3 {
   margin-left: 15px;
 }
 .button {
-  background-color: #b36e6e; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: #2b2d2f;
   padding: 15px 32px;

@@ -1,8 +1,6 @@
-
 let loggedIn = false;
 
 function insertHighscore() {
-
   let data = {
     name: prompt("Name:"),
     score: prompt("Score:")
@@ -102,6 +100,7 @@ function signUp() {
   .catch((error) => {
     console.error('Error:', error);
   });
+    alert("Du er nu signed up. Husk at logge ind")
 }
 
 // login
@@ -125,7 +124,11 @@ function logIn() {
              sessionStorage.setItem("username", body.username);
              sessionStorage.setItem("password", body.password);
              loggedIn = data.loginWasSuccessful;
+             alert("Login var succesfuld")
          }
+        else {
+            alert("Login fejlede")
+        }
     })
           .catch((error) => {
           console.error('Error:', error);
@@ -134,10 +137,13 @@ function logIn() {
 //sign out
 function signOut() {
   if(loggedIn === true) {
-    alert("User signed out")
-    console.log("User signed out")
+      alert("Bruger logget ud")
+      console.log("User signed out")
+      loggedIn = false;
   }
-  loggedIn = false;
+    else {
+        alert("Du er allerede logget ud")
+    }
 }
 
 // delete user
@@ -147,7 +153,7 @@ async function deleteUser() {
       username: sessionStorage.getItem("username"),
       password: sessionStorage.getItem("password")
     }
-  
+    
     fetch('./user', {
       method: 'DELETE',
       headers: {
@@ -162,7 +168,12 @@ async function deleteUser() {
     .catch((error) => {
       console.error('Error:', error);
     });
+      alert("Bruger slettet")
+      loggedIn = false
   }
+    else {
+        alert("Login for at slette din bruger")
+    }
 }
   
 
@@ -183,11 +194,14 @@ function submit() {
   .then(response => response.json())
   .then(data => {
     console.log('Comment inserted:', data);
-    alert("Comment Posted!");
+    alert("Kommentar postet!");
   })
   .catch((error) => {
     console.error('Error:', error);
   });
+    } 
+    else {
+        alert("Login for at poste kommentarer")
     }
 }
 
@@ -276,6 +290,9 @@ function getComment() {
               getComment();
               alert("Kommentar redigeret")
           }
+          else {
+              alert("Login for at redigere kommentarer")
+          }
       };
       btn2.innerHTML = "Slet kommentar";
       btn2.onclick = function () {
@@ -283,6 +300,9 @@ function getComment() {
               deleteComment(comment._id);
               getComment();
               alert("Kommentar slettet")
+          }
+          else {
+              alert("Login for at slette kommentarer")
           }
       };
     }
